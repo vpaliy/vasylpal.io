@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
-
+import Footer from '../components/Footer'
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
@@ -13,7 +13,7 @@ class BlogIndex extends React.Component {
     const posts = data.allMarkdownRemark.edges
 
     return (
-      <Layout location={this.props.location} title={siteTitle}>
+      <Layout location={this.props.location} title="Vasyl Paliy">
         <SEO
           title="Vasyl Paliy"
           keywords={[`blog`, `gatsby`, `javascript`, `react`]}
@@ -37,6 +37,7 @@ class BlogIndex extends React.Component {
             </div>
           )
         })}
+        <Footer />
       </Layout>
     )
   }

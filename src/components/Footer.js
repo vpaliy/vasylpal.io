@@ -3,8 +3,11 @@ import styled from 'styled-components'
 import { rhythm } from '../utils/typography'
 
 const Wrapper = styled.footer`
-  margin-top: rhythm(2.5);
-  padding-top: rhythm(1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 3rem;
+  padding-top: 3rem;
 `
 
 const Link = props => (
