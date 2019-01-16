@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
-
+import Tags from '../components/Tags'
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
@@ -24,8 +24,10 @@ class BlogPostTemplate extends React.Component {
             marginTop: rhythm(-1),
           }}
         >
+          {' '}
           {post.frontmatter.date}
         </p>
+        <Tags tags={post.frontmatter.tags} />
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
         <hr
           style={{
@@ -79,6 +81,7 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        tags
       }
     }
   }

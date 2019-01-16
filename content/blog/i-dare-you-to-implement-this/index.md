@@ -1,6 +1,7 @@
 ---
 title: I dare you to implement this!
 date: '2019-01-16T06:29:08.651Z'
+tags: ['Java', 'Android', 'UX']
 ---
 
 Most applications today have an authorization activity which can be done with Facebook, Google, Twitter or you can do it in the old fashioned way — with an email and password. It may not be the very first screen of your application (many apps have welcome screens, like a sneak peek of the app).
