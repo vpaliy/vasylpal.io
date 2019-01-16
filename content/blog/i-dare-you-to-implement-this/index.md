@@ -545,3 +545,183 @@ If you look a bit closer, you will see that the bounds of the view are still hor
 </p>
 
 The point is that the `VerticalTextView` gets the job done. It has some problems with the animation though (later in the article). Refer to this link for more detail.
+
+## It’s time to add some animations!
+We have three kinds of animation here:
+
+- **folding** animation.
+- **unfolding** animation.
+- **scale** animation when the inputs have been touched.
+
+### Folding animation
+
+We will be using the Transition Framework by Andrey Kulikov. This just a backport of [Android Transitions API](https://developer.android.com/reference/android/transition/package-summary). They are compatible with Android 2.2+.
+
+```java
+@Override
+ public void fold() {
+   //release the lock, so you can click on the label again and get the unfold() animation running
+   lock = false;
+   TransitionSet set = new TransitionSet();
+   set.setDuration(getResources().getInteger(R.integer.duration));
+   //simple rotate transition
+   Rotate transition = new Rotate();
+   //at the end of the transiton our view will have -90 angle
+   transition.setEndAngle(-90f);
+   transition.addTarget(caption);
+   //this one animates the translation from the bottom to the middle of the screen
+   ChangeBounds changeBounds = new ChangeBounds();
+   set.addTransition(changeBounds);
+   set.addTransition(transition);
+   //size and color animation
+   TextSizeTransition sizeTransition = new TextSizeTransition();
+   sizeTransition.addTarget(caption);
+   set.addTransition(sizeTransition);
+   set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+   set.addListener(new Transition.TransitionListenerAdapter() {
+     @Override
+     public void onTransitionEnd(Transition transition) {
+       super.onTransitionEnd(transition);
+       caption.setTranslationX(getTextPadding());
+       caption.setRotation(0);
+       caption.setVerticalText(true);
+       caption.requestLayout();
+     }
+   });
+   TransitionManager.beginDelayedTransition(parent, set);
+   //this is 20 sp
+   caption.setTextSize(TypedValue.COMPLEX_UNIT_PX, caption.getTextSize() / 2f);
+   //change color to super white
+   caption.setTextColor(Color.WHITE);
+   ConstraintLayout.LayoutParams params = getParams();
+   //release the right constraint, so the view gets translated to the left
+   params.rightToRight = ConstraintLayout.LayoutParams.UNSET;
+   //view is positioned in the center of the screen
+   params.verticalBias = 0.5f;
+   caption.setLayoutParams(params);
+   caption.setTranslationX(-caption.getWidth() / 8 + getTextPadding());
+ }
+```
+
+- **ChangeBounds** is a simple transition that captures the layout bounds of a view before and after the scene change and animates those changes during the transition. Here it’s used to animate view’s position on the screen.
+- **Rotation** is a transition that captures the angle of a view before and after and creates a rotate animation between the start and final angle.
+- **TextSizeTransition** class is responsible for size and color transitions. It makes the `TextView` transparent and captures two bitmaps (one for the start font size and another for the final font size). So it animates a little bit from the start (the first bitmap), then it swaps out the bitmaps, and animates the rest of the way (the second bitmap). If you want to do this with one bitmap, you will get a blown image at the end of the transition. Here’s a perfect font transition:
+
+<p align="center">
+  <img src="./scaling_animation.gif">
+</p>
+
+##### IMPORTANT!
+
+`TextSizeTransition` can’t draw the `VerticalTextView` (when it’s in the vertical position) into a bitmap; it gets clipped.
+
+<p align="center">
+  <img src="./clipped_folding_animation.gif">
+</p>
+
+We can slowly rotate the view by `90` degrees as it goes up. After the transition has stopped, we need set the rotation attribute to `0` and call the `VerticalTextView.setVerticalText(true)` method; this way we will eliminate that extra space which has been left after rotating the view. This is how we do it:
+
+```java
+set.addListener(new Transition.TransitionListenerAdapter(){
+  @Override
+  public void onTransitionEnd(Transition transition) {
+     caption.setTranslationX(getTextPadding());
+     caption.setRotation(0);
+     caption.setVerticalText(true);
+     caption.requestLayout();
+  }
+});
+```
+
+Also, I translated the view object to the left/right a little bit. I did this for two reasons:
+
+1. We need to have a small margin from the left/right (depends what fragment).
+2. We don’t have a jerky effect when setting it to the vertical position.
+
+<p align="center">
+  <img src="./final_folding_animation.gif">
+</p>
+
+#### Unfolding animation
+
+```java
+@OnClick(R.id.caption)
+public void unfold(){
+    if(!lock) {
+      caption.setVerticalText(false);
+      caption.requestLayout();
+      Rotate transition = new Rotate();
+      transition.setStartAngle(-90f);
+      transition.setEndAngle(0f);
+      transition.addTarget(caption);
+      TransitionSet set=new TransitionSet();
+      set.setDuration(getResources().getInteger(R.integer.duration));
+      ChangeBounds changeBounds=new ChangeBounds();
+      set.addTransition(changeBounds);
+      set.addTransition(transition);
+      TextSizeTransition sizeTransition=new TextSizeTransition();
+      sizeTransition.addTarget(caption);
+      set.addTransition(sizeTransition);
+      set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+      caption.post(()->{
+         TransitionManager.beginDelayedTransition(parent, set);
+         caption.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.unfolded_size));
+         caption.setTextColor(ContextCompat.getColor(getContext(),R.color.color_label));
+         caption.setTranslationX(0);
+         ConstraintLayout.LayoutParams params = getParams();
+         params.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+         params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+         params.verticalBias = 0.78f;
+         caption.setLayoutParams(params);
+      });
+      callback.show(this);
+      lock=true;
+    }      
+}
+```
+
+Considering the fact that the `TextView` is getting set vertically, we run into the same problem again — `TextSizeTransition` can’t have a vertical bitmap. What we are going to do is opposite to what we did in the folding animation. We have to set the view in the horizontal position, then quickly rotate the view by 90 degrees (`View.setRotation` method), and slowly rotate to 0 degrees as it goes to down to the center.
+
+To set the `TextView` in the horizontal position, we have to use the `VerticalTextView.setVerticalText` method, request layout and set up our transitions. Please note, that you need to call the `TransitionManager.beginDelayedTransition` method after the `TextView` has been redrawn. That’s why I do all the setup in the `TextView.post` method.
+
+Here is what we get from the code above:
+
+<p align="center">
+  <img src="./unfolding_animation.gif">
+</p>
+
+As you can see, the rotation from the horizontal position back to the vertical position happens super fast.
+
+#### Scale animation
+
+This is pretty straightforward. Whenever the keyboard appears on the screen — which means that a text input has been touched — we need to scale down the logo and background. To make my life easier, I used [this library](https://github.com/yshrsmz/KeyboardVisibilityEvent), which provides a callback every time the keyboard appears/disappears on the screen.
+
+```java
+@Nullable
+@Override
+public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  View root=inflater.inflate(authLayout(),container,false);
+  ButterKnife.bind(this,root);
+  KeyboardVisibilityEvent.setEventListener(getActivity(), isOpen -> {
+    callback.scale(isOpen);
+    if(!isOpen){
+      clearFocus();
+    }
+  });
+  return root;
+}
+```
+
+This is a method from our abstract class (`AuthFragment.class`). So, you just send a notification to the adapter via callback, and it handles the rest of the process. When the keyboard is gone, we need to clear focus by calling the `clearFocus` method.
+
+
+### Conclusion
+
+It is not hard to bring a mock-up like this to life. It's like building a semantic tree: you start with the bigger picture and break it down into smaller pieces until you reach the leaves.
+GitHub repository can be found [here](https://github.com/vpaliy/android-login).
+
+Final result:
+
+<p align="center">
+  <img src="./result.gif">
+</p>
