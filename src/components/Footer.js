@@ -8,6 +8,7 @@ const Wrapper = styled.footer`
   justify-content: space-around;
   margin-top: 3rem;
   padding-top: 3rem;
+  flex-shrink: 0;
 `
 
 const Link = props => (
