@@ -1,6 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { rhythm } from '../utils/typography'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faTwitter,
+  faGithub,
+  faLinkedinIn,
+} from '@fortawesome/free-brands-svg-icons'
 
 const Wrapper = styled.footer`
   display: flex;
@@ -11,17 +17,26 @@ const Wrapper = styled.footer`
   flex-shrink: 0;
 `
 
-const Link = props => (
-  <a href={props.href} target="_blank" rel="noopener noreferrer">
-    {props.children}
-  </a>
+const StyledLink = styled.a`
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  color: black;
+  &:hover {
+    color: #007acc;
+  }
+`
+
+const IconLink = ({ href, icon }) => (
+  <StyledLink href={href} target="_blank" rel="noopener noreferrer">
+    <FontAwesomeIcon icon={icon} size="2x" />
+  </StyledLink>
 )
 
 const Footer = () => (
   <Wrapper>
-    <Link href="https://twitter.com/vpaliy_">twitter</Link>
-    <Link href="https://github.com/vpaliy">github</Link>
-    <Link href="https://www.linkedin.com/in/vpaliyx/">linkedin</Link>
+    <IconLink href="https://www.github.com/vpaliy" icon={faGithub} />
+    <IconLink href="https://twitter.com/vpaliy_" icon={faTwitter} />
+    <IconLink href="https://www.linkedin.com/in/vpaliyx/" icon={faLinkedinIn} />
   </Wrapper>
 )
 
