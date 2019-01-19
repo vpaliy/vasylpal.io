@@ -6,9 +6,7 @@ class AnimationBuilder {
     this.jsonFile = jsonFile
     this.isLoopEnabled = false
     this.isAutoplayEnabled = false
-    this.rendererSettings = {
-      preserveAspectRatio: 'xMidYMid slice',
-    }
+    this.rendererSettings = {}
     this.width = 200
     this.height = 200
     this.style = { margin: 0 }

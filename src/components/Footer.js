@@ -22,7 +22,7 @@ const StyledLink = styled.a`
   box-shadow: none !important;
   color: black;
   &:hover {
-    color: #007acc;
+    color: #536DFE;
   }
 `
 
