@@ -11,7 +11,7 @@ import {
 const Wrapper = styled.footer`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-top: 3rem;
   padding-top: 3rem;
   flex-shrink: 0;

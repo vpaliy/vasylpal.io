@@ -1,5 +1,5 @@
 ---
-title: Make your code S.O.L.I.D again!
+title: Make your code SOLID again!
 date: '2019-01-18T06:29:08.651Z'
 tags: ['Kotlin', 'Android', 'Software Design']
 ---
