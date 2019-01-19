@@ -718,11 +718,11 @@ This is a method from our abstract class (`AuthFragment.class`). So, you just se
 
 ### Conclusion
 
-It is not hard to bring a mock-up like this to life. It's like building a semantic tree: you start with the bigger picture and break it down into smaller pieces until you reach the leaves.
-GitHub repository can be found [here](https://github.com/vpaliy/android-login).
-
-Final result:
+If you follow all the instructions above, you should be able to reproduce the following:
 
 <p align="center">
   <img src="./result.gif">
 </p>
+
+It is not hard to bring a mock-up like this to life. It's like building a semantic tree: you start with the bigger picture and break it down into smaller pieces until you reach the leaves.
+GitHub repository can be found [here](https://github.com/vpaliy/android-login).
