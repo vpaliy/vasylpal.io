@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 import Tags from '../components/Tags'
-import Bio from '../components/Bio'
+import PostFooter from '../components/PostFooter'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
 import { rhythm, scale } from '../utils/typography'
@@ -31,10 +31,12 @@ class BlogPostTemplate extends React.Component {
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
         <hr
           style={{
-            marginBottom: rhythm(1),
+            marginBottom: rhythm(0.5),
           }}
         />
-        <Bio />
+        <div style={{ marginTop: rhythm(1.5) }}>
+          <PostFooter />
+        </div>
         <ul
           style={{
             display: `flex`,

@@ -3,6 +3,15 @@ import { Link } from 'gatsby'
 import Footer from './Footer'
 import styled from 'styled-components'
 import { rhythm, scale } from '../utils/typography'
+import bulbIcon from '../../content/assets/bulb.json'
+import AnimationBuilder from './Animation'
+
+const Logo = new AnimationBuilder(bulbIcon)
+  .withHeight(rhythm(2.5))
+  .withWidth(rhythm(2.5))
+  .withLoop(true)
+  .withAutoplay(true)
+  .build()
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,6 +29,11 @@ const StyledLink = styled(Link)`
   color: inherit;
 `
 
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const Header = ({ location, title }) => {
   const rootPath = `${__PATH_PREFIX__}/`
   return location.pathname === rootPath ? (
@@ -35,11 +49,20 @@ const Header = ({ location, title }) => {
   ) : (
     <h3
       style={{
+        ...scale(0.75),
+        color: "#536DFE",
         fontFamily: `Montserrat, sans-serif`,
-        marginTop: 0,
+        marginLeft: rhythm(-1),
+        marginTop: rhythm(-0.75),
+        marginBottom: 0,
       }}
     >
-      <StyledLink to={`/`}>{title}</StyledLink>
+      <StyledLink to={`/`}>
+        <Row>
+          <Logo />
+          {title}
+        </Row>
+      </StyledLink>
     </h3>
   )
 }
