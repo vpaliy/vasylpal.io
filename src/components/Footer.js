@@ -8,10 +8,11 @@ import {
   faLinkedinIn,
 } from '@fortawesome/free-brands-svg-icons'
 
+
 const Wrapper = styled.footer`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-top: 3rem;
   padding-top: 3rem;
   flex-shrink: 0;
@@ -22,7 +23,7 @@ const StyledLink = styled.a`
   box-shadow: none !important;
   color: black;
   &:hover {
-    color: #536DFE;
+    color: #536dfe;
   }
 `
 

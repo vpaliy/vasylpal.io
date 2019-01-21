@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const Container = styled.ul`
   list-type: none;
-`
+`;
 
 const Tag = styled.li`
   display: inline-block;
@@ -15,7 +15,7 @@ const Tag = styled.li`
   font-weight: 400;
   border-radius: 3px;
   word-wrap: break-word;
-`
+`;
 
 const Tags = ({ tags }) => (
   <Container>
@@ -23,6 +23,6 @@ const Tags = ({ tags }) => (
       <Tag>{tag}</Tag>
     ))}
   </Container>
-)
+);
 
-export default Tags
+export default Tags;

@@ -1,26 +1,34 @@
-import React from 'react'
-import { Link, graphql } from 'gatsby'
-import Footer from '../components/Footer'
-import Bio from '../components/Bio'
-import Layout from '../components/Layout'
-import SEO from '../components/seo'
-import { rhythm } from '../utils/typography'
+import React from 'react';
+import { Link, graphql } from 'gatsby';
+import Footer from '../components/Footer';
+import Bio from '../components/Bio';
+import Layout from '../components/Layout';
+import SEO from '../components/seo';
+import { rhythm } from '../utils/typography';
 
 class BlogIndex extends React.Component {
   render() {
-    const { data } = this.props
-    const siteTitle = data.site.siteMetadata.title
-    const posts = data.allMarkdownRemark.edges
+    const { data } = this.props;
+    const siteTitle = data.site.siteMetadata.title;
+    const posts = data.allMarkdownRemark.edges;
 
     return (
       <Layout location={this.props.location} title="Vasyl Paliy">
         <SEO
           title="Vasyl Paliy"
-          keywords={[`blog`, `gatsby`, `javascript`, `react`]}
+          keywords={[
+            `blog`,
+            `android`,
+            `javascript`,
+            `react`,
+            'kotlin',
+            'python',
+            'rust',
+          ]}
         />
         <Bio />
         {posts.map(({ node }) => {
-          const title = node.frontmatter.title || node.fields.slug
+          const title = node.frontmatter.title || node.fields.slug;
           return (
             <div key={node.fields.slug}>
               <h3
@@ -35,15 +43,15 @@ class BlogIndex extends React.Component {
               <small>{node.frontmatter.date}</small>
               <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
             </div>
-          )
+          );
         })}
         <Footer />
       </Layout>
-    )
+    );
   }
 }
 
-export default BlogIndex
+export default BlogIndex;
 
 export const pageQuery = graphql`
   query {
@@ -68,4 +76,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

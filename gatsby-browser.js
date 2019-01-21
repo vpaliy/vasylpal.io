@@ -1,4 +1,4 @@
-require("prismjs/themes/prism.css")
+require('prismjs/themes/prism.css');
 
-import 'typeface-montserrat'
-import 'typeface-merriweather'
+import 'typeface-montserrat';
+import 'typeface-merriweather';

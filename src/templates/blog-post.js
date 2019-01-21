@@ -1,16 +1,16 @@
-import React from 'react'
-import { Link, graphql } from 'gatsby'
-import Tags from '../components/Tags'
-import PostFooter from '../components/PostFooter'
-import Layout from '../components/Layout'
-import SEO from '../components/seo'
-import { rhythm, scale } from '../utils/typography'
+import React from 'react';
+import { Link, graphql } from 'gatsby';
+import Tags from '../components/Tags';
+import PostFooter from '../components/PostFooter';
+import Layout from '../components/Layout';
+import SEO from '../components/seo';
+import { rhythm, scale } from '../utils/typography';
 
 class BlogPostTemplate extends React.Component {
   render() {
-    const post = this.props.data.markdownRemark
-    const siteTitle = this.props.data.site.siteMetadata.title
-    const { previous, next } = this.props.pageContext
+    const post = this.props.data.markdownRemark;
+    const siteTitle = this.props.data.site.siteMetadata.title;
+    const { previous, next } = this.props.pageContext;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -29,11 +29,6 @@ class BlogPostTemplate extends React.Component {
         </p>
         <Tags tags={post.frontmatter.tags} />
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr
-          style={{
-            marginBottom: rhythm(0.5),
-          }}
-        />
         <div style={{ marginTop: rhythm(1.5) }}>
           <PostFooter />
         </div>
@@ -62,11 +57,11 @@ class BlogPostTemplate extends React.Component {
           </li>
         </ul>
       </Layout>
-    )
+    );
   }
 }
 
-export default BlogPostTemplate
+export default BlogPostTemplate;
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
@@ -87,4 +82,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
