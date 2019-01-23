@@ -3,6 +3,7 @@ import { Link, graphql } from 'gatsby';
 import Tags from '../components/Tags';
 import PostFooter from '../components/PostFooter';
 import Layout from '../components/Layout';
+import GitHub from '../components/GitHub';
 import SEO from '../components/seo';
 import { rhythm, scale } from '../utils/typography';
 
@@ -29,7 +30,8 @@ class BlogPostTemplate extends React.Component {
         </p>
         <Tags tags={post.frontmatter.tags} />
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <div style={{ marginTop: rhythm(1.5) }}>
+        <div>
+          <GitHub />
           <PostFooter />
         </div>
         <ul
