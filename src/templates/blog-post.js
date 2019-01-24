@@ -4,6 +4,7 @@ import Tags from '../components/Tags';
 import PostFooter from '../components/PostFooter';
 import Layout from '../components/Layout';
 import GitHub from '../components/GitHub';
+import ShareSection from '../components/ShareSection';
 import SEO from '../components/seo';
 import { rhythm, scale } from '../utils/typography';
 
@@ -31,8 +32,7 @@ class BlogPostTemplate extends React.Component {
         <Tags tags={post.frontmatter.tags} />
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
         <div>
-          <GitHub />
-          <PostFooter />
+          <ShareSection />
         </div>
         <ul
           style={{
