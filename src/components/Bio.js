@@ -26,7 +26,7 @@ const Bio = () => (
     <Avatar src={profilePic} alt="Vasyl Paliy" />
     <About>
       <Tags
-        tags={['Java', 'Kotlin', 'C++', 'C', 'Python', 'Rust', 'JavaScript']}
+        tags={['Java', 'Kotlin', 'C++', 'C', 'Python', 'JavaScript']}
       />
     </About>
   </Wrapper>
